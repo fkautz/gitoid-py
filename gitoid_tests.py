@@ -32,7 +32,8 @@ class TestGitOID(unittest.TestCase):
     def test_gitoid_uri_sha1(self):
         with open(self.filename, "rb") as file:
             gitoid_hash = GitOID.new(file)
-            self.assertEqual(gitoid_hash.uri(), "gitoid:blob:sha1:261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64")
+            self.assertEqual(gitoid_hash.uri(),
+                             "gitoid:blob:sha1:261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64")
 
     def test_gitoid_bytes_sha1(self):
         input_data = b"example"
@@ -47,30 +48,37 @@ class TestGitOID(unittest.TestCase):
     def test_gitoid_sha1_content_length_with_explicit_length(self):
         with open(self.filename, "rb") as file:
             file_info = os.stat(self.filename)
-            gitoid_hash = GitOID.new(file, git_object_type=GitObjectType.BLOB, content_length=file_info.st_size)
+            gitoid_hash = GitOID.new(file,
+                                     git_object_type=GitObjectType.BLOB,
+                                     content_length=file_info.st_size)
             self.assertEqual(str(gitoid_hash), "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64")
 
     def test_gitoid_sha1_content_length_error(self):
         with open(self.filename, "rb") as file:
             file_info = os.stat(self.filename)
             with self.assertRaises(ValueError):
-                GitOID.new(file, git_object_type=GitObjectType.BLOB, content_length=file_info.st_size + 1)
+                GitOID.new(file,
+                           git_object_type=GitObjectType.BLOB,
+                           content_length=file_info.st_size + 1)
 
     def test_gitoid_sha256(self):
         with open(self.filename, "rb") as file:
             gitoid_hash = GitOID.new(file, hash_name=HashType.SHA256)
-            self.assertEqual(str(gitoid_hash), "ed43975fbdc3084195eb94723b5f6df44eeeed1cdda7db0c7121edf5d84569ab")
+            self.assertEqual(str(gitoid_hash),
+                             "ed43975fbdc3084195eb94723b5f6df44eeeed1cdda7db0c7121edf5d84569ab")
 
     def test_gitoid_uri_sha256(self):
         with open(self.filename, "rb") as file:
             gitoid_hash = GitOID.new(file, hash_name=HashType.SHA256)
-            self.assertEqual(gitoid_hash.uri(), "gitoid:blob:sha256"
-                                                ":ed43975fbdc3084195eb94723b5f6df44eeeed1cdda7db0c7121edf5d84569ab")
+            self.assertEqual(gitoid_hash.uri(),
+                             "gitoid:blob:sha256"
+                             ":ed43975fbdc3084195eb94723b5f6df44eeeed1cdda7db0c7121edf5d84569ab")
 
     def test_gitoid_bytes_sha256(self):
         input_data = b"example"
         gitoid_hash = GitOID.new(BytesIO(input_data), hash_name=HashType.SHA256)
-        self.assertEqual(str(gitoid_hash), "b32d8f166adfa017e9cb0d57e0777f6e9b09aa3b03c84f8f98fc5995c5dcea9d")
+        self.assertEqual(str(gitoid_hash),
+                         "b32d8f166adfa017e9cb0d57e0777f6e9b09aa3b03c84f8f98fc5995c5dcea9d")
 
     def test_gitoid_sha256_content_length_with_explicit_length(self):
         with open(self.filename, "rb") as file:
@@ -79,13 +87,15 @@ class TestGitOID(unittest.TestCase):
                                      git_object_type=GitObjectType.BLOB,
                                      content_length=file_info.st_size,
                                      hash_name=HashType.SHA256)
-            self.assertEqual(str(gitoid_hash), "ed43975fbdc3084195eb94723b5f6df44eeeed1cdda7db0c7121edf5d84569ab")
+            self.assertEqual(str(gitoid_hash),
+                             "ed43975fbdc3084195eb94723b5f6df44eeeed1cdda7db0c7121edf5d84569ab")
 
     def test_from_uri(self):
         with open(self.filename, "rb") as file:
             gitoid_hash = GitOID.new(file)
 
-            gitoid_hash2 = GitOID.from_uri("gitoid:blob:sha1:261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64")
+            gitoid_hash2 = GitOID.from_uri(
+                "gitoid:blob:sha1:261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64")
             self.assertEqual(gitoid_hash, gitoid_hash2)
 
     def test_gitoid_equal_self(self):
