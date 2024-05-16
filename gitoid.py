@@ -1,4 +1,8 @@
+"""
+gitoid-py
 
+A python implementation of the gitoid library.
+"""
 # Copyright (c) 2024 gitoid-py authors.
 # Original golang code: Copyright (c) 2022 Cisco and/or its affiliates.
 #
@@ -62,6 +66,13 @@ class GitObjectType(Enum):
 
 
 class HashType(Enum):
+    """
+    An enumeration class representing different hash types.
+
+    Enum Values:
+        - SHA1: Represents the SHA1 hash type.
+        - SHA256: Represents the SHA256 hash type.
+    """
     SHA1 = "sha1"
     SHA256 = "sha256"
 
@@ -116,7 +127,7 @@ class GitOID:
 
     """
 
-    def __init__(self, git_object_type: GitObjectType, hash_name: HashType, hash_value: bytes):
+    def __init__(self, git_object_type: GitObjectType, hash_name: HashType, hash_value):
         self.git_object_type = git_object_type
         self.hash_name = hash_name
         self.hash_value = hash_value
@@ -165,7 +176,7 @@ class GitOID:
         return cls(git_object_type, hash_name, hash_func.digest())
 
     @staticmethod
-    def header(git_object_type: GitObjectType, content_length: int) -> bytes:
+    def header(git_object_type: GitObjectType, content_length: int):
         """
         :param git_object_type: The type of Git object to include in the header.
         :param content_length: The length of the content to be included in the header.
