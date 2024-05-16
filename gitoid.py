@@ -83,13 +83,17 @@ class GitOID:
         Finds the first n files matching the GitOID in the given list of paths.
 
     """
+
     def __init__(self, git_object_type: GitObjectType, hash_name: HashType, hash_value: bytes):
         self.git_object_type = git_object_type
         self.hash_name = hash_name
         self.hash_value = hash_value
 
     @classmethod
-    def new(cls, reader: BinaryIO, git_object_type: GitObjectType = GitObjectType.BLOB, content_length=None,
+    def new(cls,
+            reader: BinaryIO,
+            git_object_type: GitObjectType = GitObjectType.BLOB,
+            content_length=None,
             hash_name=HashType.SHA1) -> "GitOID":
         if reader is None:
             raise ValueError("reader may not be nil")
@@ -107,8 +111,8 @@ class GitOID:
         seen_content_length = len(content)
         if content_length is not None:
             if seen_content_length != content_length:
-                raise ValueError(f"content length mismatch: expected {content_length}, got {seen_content_length}")
-
+                raise ValueError(f"content length mismatch: expected {content_length}, "
+                                 f"got {seen_content_length}")
 
         # Write the git object header
         hash_func.update(cls.header(git_object_type, seen_content_length))
@@ -181,7 +185,8 @@ def main():
         help="Hash type to use (default: sha1)."
     )
     parser.add_argument(
-        "-f", "--file", type=str, help="File to read data from. If not specified, read from stdin."
+        "-f", "--file", type=str, help="File to read data from. "
+                                       "If not specified, read from stdin."
     )
     args = parser.parse_args()
 
@@ -190,7 +195,9 @@ def main():
 
     if filename:
         with open(filename, "rb") as file:
-            gitoid_hash = GitOID.new(file, hash_name=hash_type, content_length=os.stat(filename).st_size)
+            gitoid_hash = GitOID.new(file,
+                                     hash_name=hash_type,
+                                     content_length=os.stat(filename).st_size)
     else:
         gitoid_hash = GitOID.new(sys.stdin.buffer, hash_name=hash_type)
 
